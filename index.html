@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube Multi-Stream</title>
+    <style>
+      body {
+        text-align: center;
+      }
+      .video-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      iframe {
+        width: 100%;
+        height: 200px;
+      }
+      button {
+        margin: 10px;
+        padding: 10px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>YouTube Multi-Stream</h1>
+    <button onclick="playAll()">Play All</button>
+    <button onclick="pauseAll()">Pause All</button>
+    <div class="video-grid" id="videoContainer"></div>
+
+    <script>
+      const videoIds = [
+        "IWa4Oqwyc1o",
+        "IWa4Oqwyc1o",
+        "IWa4Oqwyc1o",
+        "IWa4Oqwyc1o",
+        "IWa4Oqwyc1o",
+        "IWa4Oqwyc1o",
+        "IWa4Oqwyc1o",
+        "IWa4Oqwyc1o",
+      ]; // Replace with actual video IDs
+      const videoContainer = document.getElementById("videoContainer");
+
+      videoIds.forEach((id) => {
+        let iframe = document.createElement("iframe");
+        iframe.src = `https://www.youtube.com/embed/${id}?enablejsapi=1`;
+        iframe.allow = "autoplay; encrypted-media";
+        iframe.dataset.videoId = id;
+        videoContainer.appendChild(iframe);
+      });
+
+      function playAll() {
+        document.querySelectorAll("iframe").forEach((iframe) => {
+          iframe.contentWindow.postMessage(
+            '{"event":"command","func":"playVideo","args":""}',
+            "*"
+          );
+        });
+      }
+
+      function pauseAll() {
+        document.querySelectorAll("iframe").forEach((iframe) => {
+          iframe.contentWindow.postMessage(
+            '{"event":"command","func":"pauseVideo","args":""}',
+            "*"
+          );
+        });
+      }
+    </script>
+  </body>
+</html>
